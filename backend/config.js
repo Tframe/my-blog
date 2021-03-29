@@ -1,7 +1,7 @@
 
 
 module.exports = {
-    ATLAS_URI: 'mongodb+srv://tframe:E7CvBTRBNfejshed@cluster0.5etg0.mongodb.net/my-blog?retryWrites=true&w=majority',
+    ATLAS_URI: 'mongodb+srv://tframe:Xfzjnm0s33GDorF2@cluster0.5etg0.mongodb.net/my-blog?retryWrites=true&w=majority',
     SECRET_KEY: '87hnvweihw87tvhn3t4io7tq9w8n109vhrn987hnt',
     CLIENT_ID: '762300462065-bvoqj5a9urbtorufd82ghh5rfv9jvq6e.apps.googleusercontent.com',
     CLIENT_SECRET: 'gmh1lGbU2GaeMv8W_vlIdtIj',

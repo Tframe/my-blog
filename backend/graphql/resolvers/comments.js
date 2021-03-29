@@ -65,6 +65,7 @@ module.exports = {
         },
         //delete a comment
         async deleteComment(_, { articleId, commentId }, context){
+            //Check authorization before creating the comment
             const { username } = checkAuth(context);
             //Find the article
             const article = await Article.findById(articleId);
@@ -80,6 +81,32 @@ module.exports = {
                 } else {
                     throw new AuthenticationError('Action not allowed');
                 }
+            }
+        },
+        //Like an article
+        async likeArticle(_, { articleId }, context){
+            //Check authorization before creating the comment
+            const { username } = checkAuth(context);
+
+            //find article by id
+            const article = await Article.findById(articleId);
+            if(article){
+                //If article liked already, unlike it, otherwise like it
+                if(article.likes.find(like => like.username === username)){
+                    //Grab each like by all other users. 
+                    article.likes = article.likes.filter(like => like.username !== username);
+                } else {
+                    //add like info to array
+                    article.likes.push({
+                        username,
+                        createdAt: new Date().toISOString(),
+                    });
+                }
+                //save like
+                await article.save();
+                return article;
+            } else {
+                throw new UserInputError('Article not found');
             }
         }
     }
