@@ -26,6 +26,7 @@ module.exports = gql`
         id: ID!,
         title: String!,
         body: String!,
+        description: String!,
         author: String!,
         username: String!,
         createdAt: String!,

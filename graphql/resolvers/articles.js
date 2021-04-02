@@ -46,6 +46,7 @@ module.exports = {
 
             const newArticle = new Article({
                 title,
+                description,
                 username: userInfo.username,
                 body,
                 author: userInfo.firstName + ' ' + userInfo.lastName,

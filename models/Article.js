@@ -9,6 +9,7 @@ const { model, Schema } = require('mongoose');
 const articleSchema = new Schema({
     author: String,
     username: String,
+    description: String,
     title: String,
     body: String,
     createdAt: String,
