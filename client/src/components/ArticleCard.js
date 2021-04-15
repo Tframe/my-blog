@@ -4,19 +4,20 @@
 *   Description: Component for article card to display information
 */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Card, Image, Icon, Label } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-function likeArticle() {
-    console.log('Like article');
-}
+import { AuthContext } from '../context/auth';
+import LikeButton from './LikeButton';
+import DeleteButton from './DeleteButton';
 
-function commentArticle() {
-    console.log('Comment article');
-}
+function ArticleCard({ 
+    article: { id, username, author, title, description, body, createdAt, likeCount, commentCount, likes, comments } 
+}) {
 
-function ArticleCard({ article: { id, author, title, description, body, createdAt, likeCount, commentCount, likes, comments } }) {
+    const { user } = useContext(AuthContext);
 
     return (
         <Card fluid>
@@ -33,24 +34,19 @@ function ArticleCard({ article: { id, author, title, description, body, createdA
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <Button as='div' labelPosition='right' onClick={likeArticle}>
-                    <Button color='red' basic>
-                        <Icon name='heart' />
-                        Likes
-                    </Button>
-                    <Label as='a' basic color='red' pointing='left'>
-                        {likeCount}
-                    </Label>
-                </Button>
-                <Button as='div' labelPosition='right' onClick={commentArticle}>
+                <LikeButton user={ user } article={{ id, likes, likeCount }} />
+                <Button labelPosition='right' as={Link} id='comment-button' to={`/articles/${id}`}>
                     <Button basic color='blue'>
                         <Icon name='comments' />
                         Comments
                     </Button>
-                    <Label as='a' basic color='blue' pointing='left'>
+                    <Label basic color='blue' pointing='left'>
                         {commentCount}
                     </Label>
                 </Button>
+                {user && user.username === username && (
+                    <DeleteButton articleId={id} />
+                )}
             </Card.Content>
         </Card>
 

@@ -1,7 +1,7 @@
 /*
 *   Author: Trevor Frame
 *   Date: 03/31/2021
-*   Description: Helper functions that will be reused throughout
+*   Description: Helper hook that will be reused throughout
 *   application.
 */
 

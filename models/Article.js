@@ -16,7 +16,8 @@ const articleSchema = new Schema({
     comments: [
         {
             body: String,
-            username: String,
+            email: String,
+            name: String,
             createdAt: String,
         }
     ],

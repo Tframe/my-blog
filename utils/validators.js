@@ -15,34 +15,34 @@ module.exports.validateRegisterInput = (
 ) => {
     const errors = {};
     //Checks if username empty
-    if(username.trim() === ''){
+    if (username.trim() === '') {
         errors.username = 'Username must not be empty';
     }
     //Checks if first name empty
-    if(firstName.trim() === ''){
+    if (firstName.trim() === '') {
         errors.firstName = 'First name must not be empty';
     }
     //Checks if last name empty
-    if(lastName.trim() === ''){
+    if (lastName.trim() === '') {
         errors.lastName = 'Last name must not be empty';
     }
     //Checks if email empty
-    if(email.trim() === ''){
+    if (email.trim() === '') {
         errors.email = 'Email must not be empty';
     } else {
         const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
-        if(!email.match(regEx)){
+        if (!email.match(regEx)) {
             errors.email = 'Email must be a valid email address';
         }
     }
     //Checks if password empty
-    if(password === ''){
+    if (password === '') {
         errors.password = 'Password must not be empty'
-    } 
-    else if(confirmPassword === ''){
+    }
+    else if (confirmPassword === '') {
         errors.confirmPassword = 'Confirm password must not be empty';
     }
-    else if (password != confirmPassword){
+    else if (password != confirmPassword) {
         errors.confirmPassword = 'Passwords must match';
     }
 
@@ -56,11 +56,11 @@ module.exports.validateRegisterInput = (
 module.exports.validateLoginInput = (username, password) => {
     const errors = {};
     //Checks if username empty
-    if(username.trim() === ''){
+    if (username.trim() === '') {
         errors.username = 'Username must not be empty';
     }
     //Checks if username empty
-    if(password === ''){
+    if (password === '') {
         errors.password = 'Password must not be empty';
     }
 
@@ -74,26 +74,73 @@ module.exports.validateLoginInput = (username, password) => {
 module.exports.validateContactUs = (name, email, subject, body) => {
     const errors = {};
     //Checks if name empty
-    if(name === ''){
+    if (name === '') {
         errors.name = 'Name must not be empty';
     }
     //Checks if email empty
-    if(email.trim() === ''){
+    if (email.trim() === '') {
         errors.email = 'Email must not be empty';
     } else {
         const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
-        if(!email.match(regEx)){
+        if (!email.match(regEx)) {
             errors.email = 'Email must be a valid email address';
         }
     }
     //Checks if name empty
-    if(subject === ''){
+    if (subject === '') {
         errors.subject = 'Subject must not be empty';
     }
     //Checks if name empty
-    if(body === ''){
+    if (body === '') {
         errors.body = 'Body must not be empty';
     }
+    return {
+        errors,
+        valid: Object.keys(errors).length < 1
+    }
+}
+
+//Use to validate Contact Us information is valid
+module.exports.validateCreateArticle = (title, desceription, body) => {
+    const errors = {};
+    //Checks if title empty
+    if (title === '') {
+        errors.title = 'Title must not be empty';
+    }
+    //Checks if body empty
+    if (body === '') {
+        errors.body = 'Body must not be empty';
+    }
+    //Checks if desceription empty
+    if (desceription === '') {
+        errors.name = 'Description must not be empty';
+    }
+
+    return {
+        errors,
+        valid: Object.keys(errors).length < 1
+    }
+}
+
+//Use to validate Contact Us information is valid
+module.exports.validateCreateComment = (name, email, body) => {
+    const errors = {};
+    //Checks if name empty
+    if (name === '') {
+        errors.name = 'Name must not be empty';
+    }
+    //Checks if email is not empty, if not empty, check it is valid input
+    if (email.trim() !== '') {
+        const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
+        if (!email.match(regEx)) {
+            errors.email = 'Email must be a valid email address';
+        }
+    }
+    //Checks if desceription empty
+    if (body === '') {
+        errors.name = 'Comment must not be empty';
+    }
+
     return {
         errors,
         valid: Object.keys(errors).length < 1

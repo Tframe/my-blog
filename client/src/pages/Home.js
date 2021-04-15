@@ -6,21 +6,20 @@
 
 //TODO: Order most recent articles... Or... Most liked
 
-import React, { useContext } from 'react'
+import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Transition } from 'semantic-ui-react';
 
-import { AuthContext } from '../context/auth';
 import ArticleCard from '../components/ArticleCard';
-import ArticleForm from '../components/ArticleForm';
-
+import { FETCH_ARTICLES_QUERY } from '../util/graphql';
+import { AuthContext } from '../context/auth';
 
 function Home() {
-    //Get user information in persistent context
+
     const { user } = useContext(AuthContext);
+
     //Load articles if we can get any
-    const {
+    const { 
         loading,
         data: { getArticles: articles } = {}
     } = useQuery(FETCH_ARTICLES_QUERY);
@@ -31,51 +30,22 @@ function Home() {
                 <h1>Recent Articles</h1>
             </Grid.Row>
             <Grid.Row>
-                {user && (
-                    <Grid.Column>
-                        <ArticleForm>
-
-                        </ArticleForm>
-                    </Grid.Column>
-                )}
                 {loading ? (
                     <h1>Loading articles...</h1>
                 ) : (
-                    articles &&
-                    articles.map((article) => (
-                        <Grid.Column key={article.id} style={{ marginBottom: 50 }}>
-                            <ArticleCard article={article} />
-                        </Grid.Column>
-                    ))
+                    <Transition.Group>
+                        {articles &&
+                            articles.map((article) => (
+                                <Grid.Column key={article.id} style={{ marginBottom: 20 }}>
+                                    <ArticleCard article={article} />
+                                </Grid.Column>
+                            ))}
+                    </Transition.Group>
                 )}
             </Grid.Row>
         </Grid>
     );
 }
 
-const FETCH_ARTICLES_QUERY = gql`
-   { 
-       getArticles {
-            id
-            author
-            description
-            title
-            body
-            likeCount
-            likes {
-                username
-                createdAt
-            }
-            commentCount
-            comments {
-                id
-                username
-                body
-                createdAt
-            }
-            createdAt
-        }
-    }
-`;
 
 export default Home;

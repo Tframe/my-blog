@@ -87,6 +87,13 @@ function MenuBar() {
                     to='/'
                 />
                 <Menu.Item
+                    name='create article'
+                    active={activeItem === 'create article'}
+                    onClick={handleItemClick}
+                    as={Link}
+                    to='/create-article'
+                />
+                <Menu.Item
                     name='logout'
                     onClick={logout}
                 />
@@ -96,8 +103,7 @@ function MenuBar() {
         <Menu pointing secondary size='massive' color='red'>
             <Menu.Item
                 name='explore'
-                active={activeItem === 'explore'
-                }
+                active={activeItem === 'explore'}
                 onClick={handleItemClick}
                 as={Link}
                 to='/'

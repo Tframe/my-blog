@@ -8,6 +8,7 @@ const Article = require('../../models/Article');
 
 const Comment = require('../../models/Comment');
 const checkAuth = require('../../utils/check-auth');
+const { validateCreateComment } = require('../../utils/validators');
 
 //Required resolvers for graphql
 module.exports = {
@@ -38,23 +39,23 @@ module.exports = {
 
     Mutation: {
         //Create a comment
-        async createComment(_, { articleId, body }, context){
-            //Check authorization before creating the comment
-            const { username } = checkAuth(context);
-            //Validate information
-            if(body.trim() === ''){
-                throw new UserInputError('Empty comment', {
-                    errors: {
-                        body: 'Comment body must not be empty'
-                    }
-                })
+        async createComment(_, { articleId, name, email, body }, context){
+            //Validate user data
+            const { valid, errors } = validateCreateComment(
+                name,
+                email,
+                body,
+            );
+            if (!valid) {
+                throw new UserInputError('Errors', { errors });
             }
             //find article by id
             const article = await Article.findById(articleId);
             if(article){
                 article.comments.unshift({
                     body,
-                    username,
+                    name,
+                    email,
                     createdAt: new Date().toISOString(),
                 });
                 await article.save();
@@ -83,31 +84,6 @@ module.exports = {
                 }
             }
         },
-        //Like an article
-        async likeArticle(_, { articleId }, context){
-            //Check authorization before creating the comment
-            const { username } = checkAuth(context);
-
-            //find article by id
-            const article = await Article.findById(articleId);
-            if(article){
-                //If article liked already, unlike it, otherwise like it
-                if(article.likes.find(like => like.username === username)){
-                    //Grab each like by all other users. 
-                    article.likes = article.likes.filter(like => like.username !== username);
-                } else {
-                    //add like info to array
-                    article.likes.push({
-                        username,
-                        createdAt: new Date().toISOString(),
-                    });
-                }
-                //save like
-                await article.save();
-                return article;
-            } else {
-                throw new UserInputError('Article not found');
-            }
-        }
+        
     }
 }

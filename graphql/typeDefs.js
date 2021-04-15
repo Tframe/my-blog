@@ -13,7 +13,8 @@ module.exports = gql`
         id: ID!,
         body: String!,
         createdAt: String!,
-        username: String!,
+        name: String!,
+        email: String,
     },
 
     type Likes {
@@ -83,12 +84,12 @@ module.exports = gql`
         register(registerInput: RegisterInput): User!,
         login(username: String!, password: String!): User!,
 
-        createComment(articleId: String!, body: String!): Article!,
-        deleteComment(articleId: String!, commentId: ID!): Article!,
+        createComment(articleId: ID!, name: String!, email: String!, body: String!): Article!,
+        deleteComment(articleId: ID!, commentId: ID!): Article!,
 
-        likeArticle(articleId: String!): Article!,
+        likeArticle(articleId: ID!): Article!,
 
-        createArticle(title: String!, body: String!): Article!,
+        createArticle(title: String!, body: String!, description: String!): Article!,
         deleteArticle(articleId: ID!): String!,
 
         createContact(contactUsInfo: ContactUsInput): ContactUs!,
