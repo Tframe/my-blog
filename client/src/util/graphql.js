@@ -6,6 +6,7 @@ export const FETCH_ARTICLES_QUERY = gql`
          id
          username
          author
+         coverImageUrl
          description
          title
          body

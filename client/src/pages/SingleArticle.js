@@ -32,8 +32,8 @@ function SingleArticle(props) {
     });
 
     //Callback sent to deleteButton component
-    function deleteArticleCallback(){
-        props.history.push('/');
+    function deleteArticleCallback() {
+        window.location.replace('/');
     }
 
     //Whether we have article data yet
@@ -43,21 +43,21 @@ function SingleArticle(props) {
         articleMarkup = <p>Loading...</p>
     } else {
         //Information recented back after getArticle
-        const { id, title, body, createdAt, username, author, comments, commentCount, likes, likeCount } = getArticle;
+        const { id, title, body, coverImageUrl, createdAt, username, author, comments, commentCount, likes, likeCount } = getArticle;
 
         articleMarkup = (
-            <Grid>
+            <Grid centered>
                 <Grid.Row>
-                    <Grid.Column width={2}>
-                        <Image
-                            src='https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
-                            size='small'
-                            float='right' />
-                    </Grid.Column>
-                    <Grid.Column width={10}>
+                    <Grid.Column width={15}>
                         <Card fluid>
                             <Card.Content>
                                 <Card.Header>{title}</Card.Header>
+                                <hr />
+                                <Image
+                                    src={coverImageUrl}
+                                    size='huge'
+                                />
+                                <hr />
                                 <Card.Description>Written by: {author}</Card.Description>
                                 <Card.Meta>{moment(createdAt).format('MMMM Do YYYY')}</Card.Meta>
                                 <Card.Description>{body}</Card.Description>
@@ -100,6 +100,7 @@ const FETCH_ARTICLE = gql`
             author
             title
             body
+            coverImageUrl
             createdAt
             username
             likeCount

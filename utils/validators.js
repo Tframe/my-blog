@@ -101,7 +101,7 @@ module.exports.validateContactUs = (name, email, subject, body) => {
 }
 
 //Use to validate Contact Us information is valid
-module.exports.validateCreateArticle = (title, desceription, body) => {
+module.exports.validateCreateArticle = (title, description, body, coverImageUrl) => {
     const errors = {};
     //Checks if title empty
     if (title === '') {
@@ -111,10 +111,15 @@ module.exports.validateCreateArticle = (title, desceription, body) => {
     if (body === '') {
         errors.body = 'Body must not be empty';
     }
-    //Checks if desceription empty
-    if (desceription === '') {
+    //Checks if description empty
+    if (description === '') {
         errors.name = 'Description must not be empty';
     }
+    //Checks if coverImageUrl empty
+    if (coverImageUrl === '') {
+        errors.name = 'Add a valid image';
+    }
+
 
     return {
         errors,

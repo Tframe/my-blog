@@ -4,15 +4,16 @@
 *   Description: Create Article Form component.
 */
 
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Form } from 'semantic-ui-react';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag'
 
 import { useForm } from '../util/hooks';
 import { FETCH_ARTICLES_QUERY } from '../util/graphql';
+import UploadImage from '../components/UploadImage';
 
-function CreateArticle(props) {
+function CreateArticle() {
 
     //For setting errors to display if any
     const [errors, setErrors] = useState({});
@@ -23,6 +24,7 @@ function CreateArticle(props) {
         title: '',
         body: '',
         description: '',
+        coverImageUrl: '',
     });
 
     const [createArticle, { loading }] = useMutation(CREATE_ARTICLE, {
@@ -30,6 +32,7 @@ function CreateArticle(props) {
         //Destructure from result to get the data,
         //then get register from data and give alias userData.
         update(proxy, result) {
+
             //Go through cache to get articles
             const data = proxy.readQuery({
                 query: FETCH_ARTICLES_QUERY,
@@ -37,7 +40,7 @@ function CreateArticle(props) {
             //get proxy articles to make sure new article is included
             data.getArticles = [result.data.createArticle, ...data.getArticles];
             proxy.writeQuery({ query: FETCH_ARTICLES_QUERY, data });
-            props.history.push('/');
+            window.location.replace('/');
         },
         //If any errors come back from server side submit, add them to 
         //an array of errors that will then be displayed
@@ -50,6 +53,12 @@ function CreateArticle(props) {
 
     function createArticleCallback() {
         createArticle();
+    }
+
+    //Callback function for upload image component
+    function imageCallback(imageUrl){
+        values.coverImageUrl = imageUrl;
+        console.log(values);
     }
 
     return (
@@ -83,6 +92,8 @@ function CreateArticle(props) {
                     value={values.description}
                     error={errors.description ? true : false}
                 />
+                <UploadImage callBack = {imageCallback}/>
+                <br/>
                 <Button type='submit' color='blue'>
                     Submit
                 </Button>
@@ -110,15 +121,18 @@ const CREATE_ARTICLE = gql`
         $title: String!,
         $body: String!,
         $description: String!,
+        $coverImageUrl: String!,
     ) {
         createArticle(
             title: $title,
             body: $body,
             description: $description,
+            coverImageUrl: $coverImageUrl,
         ){
             id
             author
             title
+            coverImageUrl
             body
             description
             createdAt

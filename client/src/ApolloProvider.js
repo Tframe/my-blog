@@ -12,11 +12,17 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { setContext } from 'apollo-link-context';
+import { createUploadLink } from 'apollo-upload-client';
 
 //Link to http server requests
 const httpLink = createHttpLink({
     uri: 'http://localhost:5000'
 });
+
+const uploadLink = createUploadLink({
+    uri: 'http://localhost:5000/graphql',
+})
+
 
 //Creates a header object for requests
 const authLink = setContext(() => {
@@ -24,14 +30,15 @@ const authLink = setContext(() => {
     //Provide token header if token is available
     return{
         headers: {
-            Authorization: token ?  `Bearer ${token}` : ''
+            Authorization: token ? `Bearer ${token}` : ''
         }
     }
 });
 
 //Create the apollo client connection
 const client = new ApolloClient({
-    link: authLink.concat(httpLink),
+    //authLink: authLink.concat(httpLink),
+    link: authLink.concat(uploadLink),
     cache: new InMemoryCache()
 });
 

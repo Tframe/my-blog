@@ -9,6 +9,16 @@ const { gql } = require('apollo-server');
 //Create the type defs for graph ql
 module.exports = gql`
 
+    type File {
+        url: String!,
+        success: Boolean!,
+        message: String!,
+        mimetype: String,
+        encoding: String,
+        filename: String,
+        location: String,
+    },
+
     type Comment {
         id: ID!,
         body: String!,
@@ -21,7 +31,7 @@ module.exports = gql`
         id: ID!,
         createdAt: String!,
         username: String!,
-    }
+    },
 
     type Article {
         id: ID!,
@@ -35,6 +45,7 @@ module.exports = gql`
         commentCount: Int!,
         likes: [Likes]!,
         likeCount: Int!
+        coverImageUrl: String,
     },
 
     type ContactUs {
@@ -73,6 +84,7 @@ module.exports = gql`
     },
 
     type Query {
+
         getComments: [Comment],
         getComment(commentId: ID!): Comment,
 
@@ -89,9 +101,11 @@ module.exports = gql`
 
         likeArticle(articleId: ID!): Article!,
 
-        createArticle(title: String!, body: String!, description: String!): Article!,
+        createArticle(title: String!, body: String!, description: String!, coverImageUrl: String): Article!,
         deleteArticle(articleId: ID!): String!,
 
         createContact(contactUsInfo: ContactUsInput): ContactUs!,
+
+        uploadImage(file: Upload!): File!,
     },
 `;

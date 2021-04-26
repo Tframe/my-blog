@@ -11,6 +11,7 @@ const articleSchema = new Schema({
     username: String,
     description: String,
     title: String,
+    coverImageUrl: String,
     body: String,
     createdAt: String,
     comments: [

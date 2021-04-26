@@ -5,7 +5,7 @@
 */
 
 import React, { useContext } from 'react';
-import { Button, Card, Image, Icon, Label } from 'semantic-ui-react';
+import { Button, Card, Image, Icon, Label, Popup } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
@@ -13,19 +13,20 @@ import { AuthContext } from '../context/auth';
 import LikeButton from './LikeButton';
 import DeleteButton from './DeleteButton';
 
-function ArticleCard({ 
-    article: { id, username, author, title, description, body, createdAt, likeCount, commentCount, likes, comments } 
+function ArticleCard({
+    article: { id, username, author, title, coverImageUrl, description, body, createdAt, likeCount, commentCount, likes, comments }
 }) {
 
     const { user } = useContext(AuthContext);
 
     return (
-        <Card fluid>
+        <Card style={{ height: '450px' }} fluid>
             <Card.Content>
-                <Image src='https://react.semantic-ui.com/images/avatar/large/elliot.jpg' />
-                <Card.Header className='card-title'>
+                <Image src={coverImageUrl} href={`/articles/${id}`} />
+                <Card.Header className='card-title' as={Link} to={`/articles/${id}`}>
                     {title}
                 </Card.Header>
+                <Card.Description>Written by: {author}</Card.Description>
                 <Card.Meta>
                     {moment(createdAt).format('MMMM Do YYYY')}
                 </Card.Meta>
@@ -34,19 +35,27 @@ function ArticleCard({
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <LikeButton user={ user } article={{ id, likes, likeCount }} />
-                <Button labelPosition='right' as={Link} id='comment-button' to={`/articles/${id}`}>
-                    <Button basic color='blue'>
-                        <Icon name='comments' />
+                <Button.Group fluid>
+                    <LikeButton user={user} article={{ id, likes, likeCount }} />
+                    <Popup
+                        content='Comment on article...'
+                        trigger={
+                            <Button labelPosition='right' as={Link} id='comment-button' to={`/articles/${id}`}>
+                                <Button basic color='blue'>
+                                    <Icon name='comments' />
                         Comments
                     </Button>
-                    <Label basic color='blue' pointing='left'>
-                        {commentCount}
-                    </Label>
-                </Button>
-                {user && user.username === username && (
+                                <Label basic color='blue' pointing='left'>
+                                    {commentCount}
+                                </Label>
+                            </Button>
+                        }
+                    />
+                </Button.Group>
+
+                {/* {user && user.username === username && (
                     <DeleteButton articleId={id} />
-                )}
+                )} */}
             </Card.Content>
         </Card>
 

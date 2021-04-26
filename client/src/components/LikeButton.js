@@ -5,7 +5,7 @@
 */
 
 import React, { useState, useEffect } from 'react';
-import { Button, Icon, Label } from 'semantic-ui-react';
+import { Button, Icon, Label, Popup } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -20,8 +20,8 @@ function LikeButton({ user, article: { id, likeCount, likes } }) {
         //Check if user has liked already
         if (user && likes.find((like) => like.username === user.username)) {
             setLiked(true);
-        } else { 
-            setLiked(false); 
+        } else {
+            setLiked(false);
         }
         //If either user or likes change, recalculate value
     }, [user, likes]);
@@ -56,12 +56,17 @@ function LikeButton({ user, article: { id, likeCount, likes } }) {
     );
 
     return (
-        <Button as='div' labelPosition='right' onClick={ user ? likeArticle : undefined }>
-            {likeButton}
-            <Label basic color='red' pointing='left'>
-                {likeCount}
-            </Label>
-        </Button>
+        <Popup
+            content='Like article...'
+            trigger={
+                <Button as='div' labelPosition='right' onClick={user ? likeArticle : undefined}>
+                    {likeButton}
+                    <Label basic color='red' pointing='left'>
+                        {likeCount}
+                    </Label>
+                </Button>
+            }
+        />
     );
 }
 

@@ -66,7 +66,7 @@ function MenuBar() {
                 to='/'
             />
             <Menu.Menu position='right'>
-                <Menu.Item
+                {/* <Menu.Item
                     name='about'
                     active={activeItem === 'about'}
                     onClick={handleItemClick}
@@ -79,7 +79,7 @@ function MenuBar() {
                     onClick={handleItemClick}
                     as={Link}
                     to='/'
-                />
+                /> */}
                 <Menu.Item
                     name={user.username}
                     active
@@ -144,7 +144,7 @@ function MenuBar() {
                 to='/'
             />
             <Menu.Menu position='right'>
-                <Menu.Item
+                {/* <Menu.Item
                     name='about'
                     active={activeItem === 'about'}
                     onClick={handleItemClick}
@@ -157,7 +157,7 @@ function MenuBar() {
                     onClick={handleItemClick}
                     as={Link}
                     to='/'
-                />
+                /> */}
                 <Menu.Item
                     name='login'
                     active={activeItem === 'login'}

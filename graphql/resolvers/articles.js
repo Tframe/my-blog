@@ -39,10 +39,11 @@ module.exports = {
 
     Mutation: {
         //Create an article
-        async createArticle(_, { body, title, description }, context) {
+        async createArticle(_, { body, title, description, coverImageUrl }, context) {
+
             //check authorized
             const user = checkAuth(context);
-
+            //Find user by id
             const userInfo = await User.findById(user.id);
 
             //Validate user input
@@ -50,26 +51,24 @@ module.exports = {
                 title,
                 description,
                 body,
+                coverImageUrl,
             );
             //If not valid, show errors
             if (!valid) {
                 throw new UserInputError('Errors', { errors });
             }
-
+            //new article object
             const newArticle = new Article({
                 title,
                 description,
                 username: userInfo.username,
                 body,
+                coverImageUrl,
                 author: userInfo.firstName + ' ' + userInfo.lastName,
                 createdAt: new Date().toISOString(),
             });
+            //Save article to mongodb
             const article = await newArticle.save();
-
-            //send subscribers alert of new article
-            context.pubsub.publish('NEW_ARTICLE', {
-                newArticle: article,
-            })
 
             return article;
         },

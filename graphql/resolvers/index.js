@@ -8,6 +8,7 @@ const commentResolvers = require('./comments');
 const articleResolvers = require('./articles');
 const usersResolvers = require('./users');
 const contactUsResolvers = require('./contact-us');
+const fileResolvers = require('./files');
 
 module.exports = {
 
@@ -26,5 +27,6 @@ module.exports = {
         ...commentResolvers.Mutation,
         ...articleResolvers.Mutation,
         ...contactUsResolvers.Mutation,
+        ...fileResolvers.Mutation,
     },
 }

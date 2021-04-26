@@ -19,7 +19,7 @@ function Home() {
     const { user } = useContext(AuthContext);
 
     //Load articles if we can get any
-    const { 
+    const {
         loading,
         data: { getArticles: articles } = {}
     } = useQuery(FETCH_ARTICLES_QUERY);
