@@ -10,7 +10,6 @@ import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { useForm } from '../util/hooks';
-import { FETCH_ARTICLES_QUERY } from '../util/graphql';
 
 function CreateCommentForm({ articleId }) {
 
@@ -79,9 +78,9 @@ function CreateCommentForm({ articleId }) {
                     error={errors.body ? true : false}
                     onChange={onChange}
                 />
-                <Button type='submit' primary>
+                <button type='submit' className='post-comment-button'>
                     Post Comment
-                </Button>
+                </button>
             </Form>
             {Object.keys(errors).length > 0 && (
                 <div className='ui error message'>

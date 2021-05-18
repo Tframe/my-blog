@@ -5,33 +5,36 @@
 */
 
 import React, { useContext } from 'react';
-import { Button, Card, Image, Icon, Label, Popup } from 'semantic-ui-react';
+import { Button, Card, Icon, Popup } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 import { AuthContext } from '../context/auth';
 import LikeButton from './LikeButton';
-import DeleteButton from './DeleteButton';
 
 function ArticleCard({
-    article: { id, username, author, title, coverImageUrl, description, body, createdAt, likeCount, commentCount, likes, comments }
+    article: { id, author, title, coverImageUrl, description, createdAt, likeCount, commentCount, likes, topic },
+    color
 }) {
 
     const { user } = useContext(AuthContext);
 
     return (
-        <Card style={{ height: '450px' }} fluid>
+        <Card style={{ 'height': 'auto', 'marginBottom': '20px', 'backgroundColor': color }} fluid>
             <Card.Content>
-                <Image src={coverImageUrl} href={`/articles/${id}`} />
-                <Card.Header className='card-title' as={Link} to={`/articles/${id}`}>
+                <Card.Description className='topic'>{topic}</Card.Description>
+                <a className='card-title' href={`/articles/${id}`}>
                     {title}
-                </Card.Header>
-                <Card.Description>Written by: {author}</Card.Description>
+                </a>
+                <Card.Description>By: {author}</Card.Description>
                 <Card.Meta>
                     {moment(createdAt).format('MMMM Do YYYY')}
                 </Card.Meta>
+                <a href={`/articles/${id}`}>
+                    <img className='article-image' style={{ display: 'block' }} src={coverImageUrl} alt='Bad' />
+                </a>
                 <Card.Description>
-                    {description}
+                    {description.length > 200 ? description.substring(0, 200) + ' . . . ' : description}
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
@@ -40,22 +43,16 @@ function ArticleCard({
                     <Popup
                         content='Comment on article...'
                         trigger={
-                            <Button labelPosition='right' as={Link} id='comment-button' to={`/articles/${id}`}>
-                                <Button basic color='blue'>
+                            //TODO: Make button scroll to comments section
+                            <Button labelPosition='right' as={Link} to={`/articles/${id}`} style={{ 'marginLeft': '10px', 'marginRight': '10px' }}>
+                                <Button style={{ 'color': '#264653', 'backgroundColor': '#FDF4EC', 'borderRadius': '6px' }}>
                                     <Icon name='comments' />
-                        Comments
-                    </Button>
-                                <Label basic color='blue' pointing='left'>
-                                    {commentCount}
-                                </Label>
+                                    {commentCount} Comments
+                                </Button>
                             </Button>
                         }
                     />
                 </Button.Group>
-
-                {/* {user && user.username === username && (
-                    <DeleteButton articleId={id} />
-                )} */}
             </Card.Content>
         </Card>
 

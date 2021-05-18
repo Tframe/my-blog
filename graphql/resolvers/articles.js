@@ -22,6 +22,18 @@ module.exports = {
                 throw new Error(error);
             }
         },
+        //get all articles by a topic
+        async getArticlesByTopic(_, { topic }) {
+
+            try {
+                var query = { topic: topic }
+                //get list of articles with this topic
+                const articles = await Article.find(query).sort({ createdAt: -1 });
+                return articles;
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
         //get a single article by id
         async getArticle(_, { articleId }) {
             try {
@@ -34,12 +46,13 @@ module.exports = {
             } catch (error) {
                 throw new Error(error);
             }
-        }
+        },
+    
     },
 
     Mutation: {
         //Create an article
-        async createArticle(_, { body, title, description, coverImageUrl }, context) {
+        async createArticle(_, { body, title, description, coverImageUrl, topic }, context) {
 
             //check authorized
             const user = checkAuth(context);
@@ -52,6 +65,7 @@ module.exports = {
                 description,
                 body,
                 coverImageUrl,
+                topic,
             );
             //If not valid, show errors
             if (!valid) {
@@ -64,6 +78,7 @@ module.exports = {
                 username: userInfo.username,
                 body,
                 coverImageUrl,
+                topic,
                 author: userInfo.firstName + ' ' + userInfo.lastName,
                 createdAt: new Date().toISOString(),
             });

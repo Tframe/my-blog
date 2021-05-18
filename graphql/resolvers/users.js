@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 const { UserInputError } = require('apollo-server');
 
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators');
-const { SECRET_KEY } = require('../../config');
+const { SECRET_KEY } = require('../../config/config');
 const User = require('../../models/User');
 
 //Takes user information and returns a token

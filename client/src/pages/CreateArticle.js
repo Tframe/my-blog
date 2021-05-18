@@ -4,7 +4,7 @@
 *   Description: Create Article Form component.
 */
 
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Form } from 'semantic-ui-react';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag'
@@ -14,6 +14,15 @@ import { FETCH_ARTICLES_QUERY } from '../util/graphql';
 import UploadImage from '../components/UploadImage';
 
 function CreateArticle() {
+
+    //Potential topics
+    const topics = [
+        { key: 'e', text: 'Explore', value: 'Explore' },
+        { key: 'b', text: 'Build', value: 'Build' },
+        { key: 'p', text: 'Parent', value: 'Parent' },
+        { key: 'ed', text: 'Eat and Drink', value: 'Eat and Drink' },
+        { key: 'pl', text: 'Play', value: 'Play' },
+      ]
 
     //For setting errors to display if any
     const [errors, setErrors] = useState({});
@@ -26,6 +35,11 @@ function CreateArticle() {
         description: '',
         coverImageUrl: '',
     });
+
+    //Used to update topic value.
+    const selectTopic = (_, { value }) => {
+        values.topic = value;
+    };
 
     const [createArticle, { loading }] = useMutation(CREATE_ARTICLE, {
         //If mutation is successful, trigger and get result back
@@ -58,7 +72,6 @@ function CreateArticle() {
     //Callback function for upload image component
     function imageCallback(imageUrl){
         values.coverImageUrl = imageUrl;
-        console.log(values);
     }
 
     return (
@@ -92,6 +105,14 @@ function CreateArticle() {
                     value={values.description}
                     error={errors.description ? true : false}
                 />
+                <Form.Select
+                    fluid
+                    label='Topic'
+                    options={topics}
+                    placeholder='Topic'
+                    onChange={selectTopic}
+                    error={errors.topic ? true : false}
+                />
                 <UploadImage callBack = {imageCallback}/>
                 <br/>
                 <Button type='submit' color='blue'>
@@ -122,12 +143,14 @@ const CREATE_ARTICLE = gql`
         $body: String!,
         $description: String!,
         $coverImageUrl: String!,
+        $topic: String!,
     ) {
         createArticle(
             title: $title,
             body: $body,
             description: $description,
             coverImageUrl: $coverImageUrl,
+            topic: $topic,
         ){
             id
             author
@@ -137,6 +160,7 @@ const CREATE_ARTICLE = gql`
             description
             createdAt
             username
+            topic
             likes {
                 id
                 username

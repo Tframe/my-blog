@@ -9,16 +9,12 @@ import React from 'react';
 import App from './App';
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { createHttpLink } from 'apollo-link-http';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { setContext } from 'apollo-link-context';
 import { createUploadLink } from 'apollo-upload-client';
 
-//Link to http server requests
-const httpLink = createHttpLink({
-    uri: 'http://localhost:5000'
-});
 
+//Link to uploadLink server requests
 const uploadLink = createUploadLink({
     uri: 'http://localhost:5000/graphql',
 })

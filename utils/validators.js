@@ -101,8 +101,10 @@ module.exports.validateContactUs = (name, email, subject, body) => {
 }
 
 //Use to validate Contact Us information is valid
-module.exports.validateCreateArticle = (title, description, body, coverImageUrl) => {
+module.exports.validateCreateArticle = (title, description, body, coverImageUrl, topic) => {
     const errors = {};
+
+    const topics = ['Explore', 'Build', 'Parent', 'Eat and Drink', 'Play'];
     //Checks if title empty
     if (title === '') {
         errors.title = 'Title must not be empty';
@@ -113,13 +115,20 @@ module.exports.validateCreateArticle = (title, description, body, coverImageUrl)
     }
     //Checks if description empty
     if (description === '') {
-        errors.name = 'Description must not be empty';
+        errors.description = 'Description must not be empty';
     }
     //Checks if coverImageUrl empty
     if (coverImageUrl === '') {
-        errors.name = 'Add a valid image';
+        errors.coverImageUrl = 'Add a valid image';
     }
-
+    //Validate topic is correct type
+    if(topic === ''){
+        errors.topic = 'Provide a topic';
+    }
+    if(!topics.includes(topic)){
+        console.log(topic);
+        errors.topic = 'Provide a valid topic';
+    }
 
     return {
         errors,

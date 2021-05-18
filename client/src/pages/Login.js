@@ -5,7 +5,7 @@
 */
 
 import React, { useState, useContext } from 'react'
-import { Button, Form } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -52,7 +52,7 @@ function Login(props) {
     return (
         <div className='form-container'>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
-                <h1>Login</h1>
+                <h1 className='login'>Login</h1>
                 <Form.Input
                     label='Username'
                     placeholder='Username...'
@@ -71,9 +71,13 @@ function Login(props) {
                     error={errors.password ? true : false}
                     onChange={onChange}
                 />
-                <Button type='submit' primary>
+                <button type='submit' className='login-button'>
                     Login
-                </Button>
+                </button>
+                <button type="button" className='register-button'>
+                    <a href='/register' className='register-button-text'>Register</a>
+                </button>
+                
             </Form>
             {Object.keys(errors).length > 0 && (
                 <div className='ui error message'>

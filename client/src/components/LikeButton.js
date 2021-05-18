@@ -5,7 +5,7 @@
 */
 
 import React, { useState, useEffect } from 'react';
-import { Button, Icon, Label, Popup } from 'semantic-ui-react';
+import { Button, Icon, Popup } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -38,20 +38,20 @@ function LikeButton({ user, article: { id, likeCount, likes } }) {
     //If not, outline icon.
     const likeButton = user ? (
         liked ? (
-            <Button color='red'>
+            <Button style={{ 'color': '#DB3A34', 'backgroundColor': '#FDF4EC', 'paddingLeft': '10px', 'paddingRight': '10px', 'borderRadius': '6px'  }}>
                 <Icon name='heart' />
-                    Likes
+                {likeCount} Likes
             </Button>
         ) : (
-            <Button color='red' basic>
+            <Button style={{ 'color': '#264653', 'backgroundColor': '#FDF4EC', 'paddingLeft': '10px', 'paddingRight': '10px', 'borderRadius': '6px'   }}>
                 <Icon name='heart' />
-                    Likes
+                {likeCount} Likes
             </Button>
         )
     ) : (
-        <Button as={Link} to='/login' color='red' basic>
+        <Button as={Link} to='/login' style={{ 'backgroundColor': '#FDF4EC', 'paddingLeft': '10px', 'paddingRight': '10px', 'borderRadius': '6px'   }}>
             <Icon name='heart' />
-                Likes
+                {likeCount} Likes
         </Button>
     );
 
@@ -61,9 +61,6 @@ function LikeButton({ user, article: { id, likeCount, likes } }) {
             trigger={
                 <Button as='div' labelPosition='right' onClick={user ? likeArticle : undefined}>
                     {likeButton}
-                    <Label basic color='red' pointing='left'>
-                        {likeCount}
-                    </Label>
                 </Button>
             }
         />

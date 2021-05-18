@@ -11,12 +11,15 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
 
-const { ATLAS_URI } = require('./config');
+const multer = require('multer');
+
+const { ATLAS_URI } = require('./config/config');
 //get graphql typedefs and resolvers
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
 
 const app = express();
+
 
 //Create apollo server with the typedefs and resolvers
 const server = new ApolloServer({

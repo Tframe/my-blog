@@ -7,7 +7,7 @@
 import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-import { Image, Card, Grid, Button, Icon, Label } from 'semantic-ui-react';
+import { Card, Grid, Button, Icon, Popup } from 'semantic-ui-react';
 import moment from 'moment';
 
 import { AuthContext } from '../context/auth';
@@ -43,50 +43,58 @@ function SingleArticle(props) {
         articleMarkup = <p>Loading...</p>
     } else {
         //Information recented back after getArticle
-        const { id, title, body, coverImageUrl, createdAt, username, author, comments, commentCount, likes, likeCount } = getArticle;
+        const { id, title, body, coverImageUrl, createdAt, username, author, comments, commentCount, likes, likeCount, topic } = getArticle;
 
         articleMarkup = (
-            <Grid centered>
-                <Grid.Row>
-                    <Grid.Column width={15}>
-                        <Card fluid>
-                            <Card.Content>
-                                <Card.Header>{title}</Card.Header>
-                                <hr />
-                                <Image
-                                    src={coverImageUrl}
-                                    size='huge'
-                                />
-                                <hr />
-                                <Card.Description>Written by: {author}</Card.Description>
-                                <Card.Meta>{moment(createdAt).format('MMMM Do YYYY')}</Card.Meta>
-                                <Card.Description>{body}</Card.Description>
-                            </Card.Content>
-                            <hr />
-                            <Card.Content extra>
+            <div className='grids'>
+                <Grid centered>
+                    <Grid.Row>
+                        <Grid.Column width={15}>
+                            <p className='topic'>
+                                {topic}
+                            </p>
+                            <h1 className='header'>
+                                {title}
+                            </h1>
+                            <p className='author'>
+                                By: {author}
+                            </p>
+                            <p className='date'>
+                                {moment(createdAt).format('MMMM Do YYYY')}
+                            </p>
+                            <img src={coverImageUrl} className='article-image' alt='Bad'></img>
+                            <br />
+                            <Button.Group fluid>
                                 <LikeButton user={user} article={{ id, likeCount, likes }} />
-                                <Button
-                                    as='div'
-                                    labelPosition='right'
-                                    onClick={() => console.log('COMMENT')}
-                                >
-                                    <Button basic color='blue'>
-                                        <Icon name='comments' />
-                                    </Button>
-                                    <Label basic color='blue' pointing='left'>
-                                        {commentCount}
-                                    </Label>
+                                <Popup
+                                    content='Comment on article...'
+                                    trigger={
+                                        <Button labelPosition='right' style={{ 'marginLeft': '10px', 'marginRight': '10px' }}>
+                                            <Button style={{ 'color': '#264653', 'backgroundColor': '#FDF4EC', 'borderRadius': '6px' }}>
+                                                <Icon name='comments' />
+                                                {commentCount} Comments
                                 </Button>
+                                        </Button>
+                                    }
+                                />
                                 {user && user.username === username && (
                                     <DeleteButton articleId={id} callback={deleteArticleCallback} />
                                 )}
-                            </Card.Content>
-                        </Card>
-                        <CommentsCard article={{ comments }} />
-                        <CreateCommentForm articleId={id} />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                            </Button.Group>
+
+
+                            <br />
+                            <br />
+                            <Card.Description>{body}</Card.Description>
+                            <br />
+
+
+                            <CommentsCard article={{ comments }} />
+                            <CreateCommentForm articleId={id} />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </div>
         );
     }
     return articleMarkup;
@@ -100,6 +108,7 @@ const FETCH_ARTICLE = gql`
             author
             title
             body
+            topic
             coverImageUrl
             createdAt
             username

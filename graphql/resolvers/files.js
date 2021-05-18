@@ -3,9 +3,20 @@
 *   Date: 04/18/2021
 *   Description: Maintain graphql file resolvers
 */
+
+const { Storage } = require('@google-cloud/storage');
 const path = require('path');
 const fs = require('fs');
 
+//google cloud storage
+const gc = new Storage({
+    keyFilename: path.join(__dirname, '../../config/frame-family-blog-f543a78ccbf2.json'),
+    projectId: 'frame-family-blog',
+});
+
+const frameFamilyBucket = gc.bucket('frame-family-bucket');
+
+//Function used to create a random string for file name
 function generateRandomString(length) {
     var result = [];
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -26,25 +37,31 @@ const processUpload = async (file) => {
     const randomName = generateRandomString(12) + ext;
     const pathName = path.join(__dirname, `../../public/images/${randomName}`);
     let stream = createReadStream();
-    return new Promise((resolve, reject) => {
-        stream
-            .pipe(fs.createWriteStream(pathName))
-            .on("finish", () => {
+    return await new Promise((resolve, reject) => {
+        stream.pipe(
+            frameFamilyBucket.file(randomName).createWriteStream({
+                resumable: false,
+                gzip: true,
+            })
+        )
+            .on('finish', () => {
+                
                 resolve({
                     success: true,
                     message: "Successfully Uploaded",
                     mimetype, filename, encoding, location: pathName,
-                    url: `http://localhost:5000/images/${randomName}`,
+                    url: `https://storage.cloud.google.com/frame-family-bucket/${randomName}`,
                 })
             })
-            .on("error", (err) => {
+            .on("error", (error) => {
                 console.log("Error Event Emitted")
                 reject({
                     success: false,
                     message: "Failed"
                 })
             })
-    })
+    });
+
 }
 
 //Required resolvers for graphql

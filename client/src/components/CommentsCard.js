@@ -11,10 +11,12 @@ import { Card } from 'semantic-ui-react';
 
 function CommentsCard({ article: { comments } }) {
 
+    const cardColors = [ '#F8B377', '#FAC99E', '#FAD3B2', '#FCDFC5']
+
     return (
         <>
-            {comments.map((comment) => (
-                <Card fluid key={comment.id}>
+            {comments.map((comment, index) => (
+                <Card style={{ 'backgroundColor': cardColors[(index)%cardColors.length] }} fluid key={comment.id}>
                     <Card.Content>
                         <Card.Header>{comment.name}</Card.Header>
                         <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>

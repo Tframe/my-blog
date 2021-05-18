@@ -11,75 +11,54 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/auth';
 
 function MenuBar() {
-    const { user, logout } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const pathname = window.location.pathname;
     const path = pathname === '/' ? 'home' : pathname.substr(1);
 
     const [activeItem, setActiveItem] = useState(path);
 
-    const handleItemClick = (e, { name }) => setActiveItem(name);
+    const handleItemClick = (_, { name }) => setActiveItem(name);
 
     //If a user is logged in, display a menu bar with user name and logout,
     //otherwise display a register and login button.
     const menuBar = user ? (
-        <Menu pointing secondary size='massive' color='red'>
+        <Menu pointing secondary size='massive' color='orange'>
             <Menu.Item
                 name='explore'
                 active={activeItem === 'explore'}
                 onClick={handleItemClick}
                 as={Link}
-                to='/'
+                to='/explore'
             />
             <Menu.Item
                 name='build'
                 active={activeItem === 'build'}
                 onClick={handleItemClick}
                 as={Link}
-                to='/'
+                to='/build'
             />
             <Menu.Item
-                name='father'
-                active={activeItem === 'father'}
+                name='parent'
+                active={activeItem === 'parent'}
                 onClick={handleItemClick}
                 as={Link}
-                to='/'
+                to='/parent'
             />
             <Menu.Item
                 name='eat and drink'
                 active={activeItem === 'eat and drink'}
                 onClick={handleItemClick}
                 as={Link}
-                to='/'
+                to='/eat-drink'
             />
             <Menu.Item
                 name='play'
                 active={activeItem === 'play'}
                 onClick={handleItemClick}
                 as={Link}
-                to='/'
-            />
-            <Menu.Item
-                name='level up'
-                active={activeItem === 'level up'}
-                onClick={handleItemClick}
-                as={Link}
-                to='/'
+                to='/play'
             />
             <Menu.Menu position='right'>
-                {/* <Menu.Item
-                    name='about'
-                    active={activeItem === 'about'}
-                    onClick={handleItemClick}
-                    as={Link}
-                    to='/'
-                />
-                <Menu.Item
-                    name='contact'
-                    active={activeItem === 'contact'}
-                    onClick={handleItemClick}
-                    as={Link}
-                    to='/'
-                /> */}
                 <Menu.Item
                     name={user.username}
                     active
@@ -93,86 +72,45 @@ function MenuBar() {
                     as={Link}
                     to='/create-article'
                 />
-                <Menu.Item
-                    name='logout'
-                    onClick={logout}
-                />
             </Menu.Menu>
         </Menu>
     ) : (
-        <Menu pointing secondary size='massive' color='red'>
+        <Menu fluid widths={6} pointing secondary size='massive' color='red'>
             <Menu.Item
                 name='explore'
                 active={activeItem === 'explore'}
                 onClick={handleItemClick}
                 as={Link}
-                to='/'
+                to='/explore'
             />
             <Menu.Item
                 name='build'
                 active={activeItem === 'build'}
                 onClick={handleItemClick}
                 as={Link}
-                to='/'
+                to='/build'
             />
             <Menu.Item
-                name='father'
-                active={activeItem === 'father'}
+                name='parent'
+                active={activeItem === 'parent'}
                 onClick={handleItemClick}
                 as={Link}
-                to='/'
+                to='/parent'
             />
             <Menu.Item
                 name='eat and drink'
                 active={activeItem === 'eat and drink'}
                 onClick={handleItemClick}
                 as={Link}
-                to='/'
+                to='/eat-drink'
             />
             <Menu.Item
                 name='play'
                 active={activeItem === 'play'}
                 onClick={handleItemClick}
                 as={Link}
-                to='/'
+                to='/play'
             />
-            <Menu.Item
-                name='level up'
-                active={activeItem === 'level up'}
-                onClick={handleItemClick}
-                as={Link}
-                to='/'
-            />
-            <Menu.Menu position='right'>
-                {/* <Menu.Item
-                    name='about'
-                    active={activeItem === 'about'}
-                    onClick={handleItemClick}
-                    as={Link}
-                    to='/'
-                />
-                <Menu.Item
-                    name='contact'
-                    active={activeItem === 'contact'}
-                    onClick={handleItemClick}
-                    as={Link}
-                    to='/'
-                /> */}
-                <Menu.Item
-                    name='login'
-                    active={activeItem === 'login'}
-                    onClick={handleItemClick}
-                    as={Link}
-                    to='/login'
-                />
-                <Menu.Item
-                    name='register'
-                    active={activeItem === 'register'}
-                    onClick={handleItemClick}
-                    as={Link}
-                    to='/register'
-                />
-            </Menu.Menu>
         </Menu >
     );
 

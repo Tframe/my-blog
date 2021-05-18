@@ -11,7 +11,7 @@ const checkAuth = require('../../utils/check-auth');
 const { validateContactUs } = require('../../utils/validators');
 
 //Used for oatuh2 emailer
-const { CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN } = require('../../config');
+const { CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN } = require('../../config/config');
 
 //Function to take contact us info and send to email
 //Based on w3schools nodejs email example
