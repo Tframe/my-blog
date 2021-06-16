@@ -9,7 +9,7 @@ import React from 'react'
 function Title() {
     return (
         <div className="title">
-            <a className="title-text" href='/'>GAME OF FRAMES</a>
+            <a className="title-text" href='/home'>FRAME OF MINE</a>
         </div>
     )
 }

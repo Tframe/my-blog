@@ -18,6 +18,7 @@ module.exports = {
     },
 
     Query: {
+        ...usersResolvers.Query,
         ...commentResolvers.Query,
         ...articleResolvers.Query,
     },

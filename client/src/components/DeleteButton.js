@@ -36,7 +36,7 @@ function DeleteButton({ articleId, callback }) {
                         as='div'
                         color='red'
                         floated='right'
-                        style={{'borderRadius':'6px'}}
+                        style={{ 'borderRadius': '6px' }}
                         onClick={() => setConfirmOpen(true)}
                     >
                         <Icon name='trash' style={{ margin: 0 }} />

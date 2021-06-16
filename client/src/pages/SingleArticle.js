@@ -7,8 +7,9 @@
 import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-import { Card, Grid, Button, Icon, Popup } from 'semantic-ui-react';
+import { Grid, Button, Icon, Popup } from 'semantic-ui-react';
 import moment from 'moment';
+
 
 import { AuthContext } from '../context/auth';
 import LikeButton from '../components/LikeButton';
@@ -17,6 +18,8 @@ import CommentsCard from '../components/CommentsCard';
 import CreateCommentForm from '../components/CreateCommentForm';
 
 function SingleArticle(props) {
+
+
     //get the passed articleId from the props
     const articleId = props.match.params.articleId;
     //Check if a user is logged in and get information
@@ -43,29 +46,51 @@ function SingleArticle(props) {
         articleMarkup = <p>Loading...</p>
     } else {
         //Information recented back after getArticle
-        const { id, title, body, coverImageUrl, createdAt, username, author, comments, commentCount, likes, likeCount, topic } = getArticle;
+        const { id, title, body, coverImageUrl, createdAt, username, author, comments, commentCount, likes, likeCount, topic, extraPhotosAndBodies } = getArticle;
 
         articleMarkup = (
             <div className='grids'>
                 <Grid centered>
                     <Grid.Row>
                         <Grid.Column width={15}>
-                            <p className='topic'>
-                                {topic}
+                            <p>
+                                <div className='topic'>
+                                    {topic}
+                                </div>
                             </p>
-                            <h1 className='header'>
-                                {title}
-                            </h1>
-                            <p className='author'>
-                                By: {author}
+                            <p className='card-paragraph'>
+                                <div className='card-title'>
+                                    {title.toUpperCase()}
+                                </div>
                             </p>
-                            <p className='date'>
-                                {moment(createdAt).format('MMMM Do YYYY')}
+                            <p className='card-paragraph'>
+                                <div className='author'>
+                                    {author}
+                                </div>
                             </p>
-                            <img src={coverImageUrl} className='article-image' alt='Bad'></img>
+                            <p className='card-paragraph'>
+                                <div className='date'>
+                                    {moment(createdAt).format('MM')}.{moment(createdAt).format('DD')}.{moment(createdAt).format('YY')}
+                                </div>
+                            </p>
+                            <img src={coverImageUrl} className='article-image' alt='Not found'></img>
+
+                            <div className='body-text'>
+                                {body}
+                            </div>
+                            {extraPhotosAndBodies && extraPhotosAndBodies.map((field, index) => {
+                                return (
+                                    <div key={`${field}-${index}`}>
+                                        <img src={extraPhotosAndBodies[index].photoUrl} className='article-image' alt='Not found'></img>
+                                        <div className='body-text'>
+                                            {extraPhotosAndBodies[index].body}
+                                        </div>
+                                    </div>
+                                )
+                            })}
                             <br />
                             <Button.Group fluid>
-                                <LikeButton user={user} article={{ id, likeCount, likes }} />
+                                <LikeButton article={{ id, likeCount, likes }} />
                                 <Popup
                                     content='Comment on article...'
                                     trigger={
@@ -81,13 +106,6 @@ function SingleArticle(props) {
                                     <DeleteButton articleId={id} callback={deleteArticleCallback} />
                                 )}
                             </Button.Group>
-
-
-                            <br />
-                            <br />
-                            <Card.Description>{body}</Card.Description>
-                            <br />
-
 
                             <CommentsCard article={{ comments }} />
                             <CreateCommentForm articleId={id} />
@@ -109,6 +127,10 @@ const FETCH_ARTICLE = gql`
             title
             body
             topic
+            extraPhotosAndBodies {
+                body
+                photoUrl
+            }
             coverImageUrl
             createdAt
             username

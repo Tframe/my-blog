@@ -32,6 +32,12 @@ module.exports = gql`
         username: String!,
     },
 
+    type ExtraPhotoAndBody {
+        id: ID!,
+        photoUrl: String!,
+        body: String!,
+    },
+
     type Article {
         id: ID!,
         title: String!,
@@ -40,6 +46,7 @@ module.exports = gql`
         author: String!,
         username: String!,
         createdAt: String!,
+        extraPhotosAndBodies: [ExtraPhotoAndBody]!,
         comments: [Comment]!,
         commentCount: Int!,
         likes: [Likes]!,
@@ -67,6 +74,12 @@ module.exports = gql`
         createdAt: String!,
     },
 
+    type BrowserFingerprint {
+        id: ID!,
+        browserFingerprintId: String!,
+        createdAt: String!,
+    },
+
     input RegisterInput {
         username: String!,
         firstName: String!,
@@ -83,6 +96,11 @@ module.exports = gql`
         body: String!,
     },
 
+    input ExtraPhotoAndBodyInput {
+        photoUrl: String!,
+        body: String!,
+    },
+
     type Query {
 
         getComments: [Comment],
@@ -91,6 +109,9 @@ module.exports = gql`
         getArticles: [Article],
         getArticle(articleId: ID!): Article,
         getArticlesByTopic(topic: String!): [Article],
+
+        getBrowserFingerprints: [BrowserFingerprint],
+        getBrowserFingerprint(browserFingerprintId: String!): BrowserFingerprint,
     },
 
     type Mutation {
@@ -102,12 +123,14 @@ module.exports = gql`
 
         likeArticle(articleId: ID!): Article!,
 
-        createArticle(title: String!, body: String!, description: String!, coverImageUrl: String, topic: String): Article!,
+        createArticle(title: String!, body: String!, description: String!, coverImageUrl: String!, topic: String!, extraPhotosAndBodies: [ExtraPhotoAndBodyInput] ): Article!,
         deleteArticle(articleId: ID!): String!,
 
         createContact(contactUsInfo: ContactUsInput): ContactUs!,
 
         uploadImage(file: Upload!): File!,
+
+        addBrowserFingerprint(browserFingerprintId: String!): BrowserFingerprint!,
     },
 `;
 

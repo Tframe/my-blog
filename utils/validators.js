@@ -101,7 +101,7 @@ module.exports.validateContactUs = (name, email, subject, body) => {
 }
 
 //Use to validate Contact Us information is valid
-module.exports.validateCreateArticle = (title, description, body, coverImageUrl, topic) => {
+module.exports.validateCreateArticle = (title, description, body, coverImageUrl, topic, extraPhotosAndBodies) => {
     const errors = {};
 
     const topics = ['Explore', 'Build', 'Parent', 'Eat and Drink', 'Play'];
@@ -126,8 +126,16 @@ module.exports.validateCreateArticle = (title, description, body, coverImageUrl,
         errors.topic = 'Provide a topic';
     }
     if(!topics.includes(topic)){
-        console.log(topic);
         errors.topic = 'Provide a valid topic';
+    }
+
+    //If there is any extra, validate url is string, and body is string.
+    if(extraPhotosAndBodies.length > 0){
+        for(var i = 0; i < extraPhotosAndBodies.length; i++){
+            if(extraPhotosAndBodies[i].body == '' || extraPhotosAndBodies[i].photoUrl == ''){
+                errors.extraPhotosAndBodies = 'Provide the additional body text and image';
+            }
+        }
     }
 
     return {

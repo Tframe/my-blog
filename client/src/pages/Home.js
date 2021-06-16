@@ -16,7 +16,7 @@ import { AuthContext } from '../context/auth';
 
 function Home() {
 
-    const cardColors = [ '#F8B377', '#FAC99E', '#FAD3B2', '#FCDFC5']
+    const cardColors = ['#F8B377', '#FAC99E', '#FAD3B2', '#FCDFC5']
 
     //number of articles to display
     const [numArticles, setNumArticles] = React.useState(5);
@@ -24,7 +24,7 @@ function Home() {
     const loadMoreArticles = () => setNumArticles(c => c + 5);
 
     useContext(AuthContext);
-
+    
     //Load articles if we can get any
     const {
         loading,
@@ -45,7 +45,7 @@ function Home() {
                             {articles &&
                                 articles.slice(0, numArticles).map((article, index) => (
                                     <Grid.Column key={article.id} style={{ marginBottom: 20 }}>
-                                        <ArticleCard article={article} color={cardColors[(index)%cardColors.length]} />
+                                        <ArticleCard article={article} color={cardColors[(index) % cardColors.length]} />
                                     </Grid.Column>
                                 ))}
                         </Transition.Group>
@@ -61,6 +61,5 @@ function Home() {
         </div >
     );
 }
-
 
 export default Home;

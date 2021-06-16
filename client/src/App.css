@@ -1,19 +1,19 @@
 .title {
-    padding-top: 45px;
-    padding-bottom: 15px;
+    padding-top: 12vh;
+    padding-bottom: 4vh;
     text-align:center;
 }
 
 .title-text {
     color: #2A9D8F;
-    font-size: 50px;
+    font-size: 5em;
     font-weight: bold;
     font-family: 'Farro', sans-serif;
 }
 
 .title-text:hover {
     color: #2A9D8F;
-    font-size: 50px;
+    font-size: 5em;
     font-weight: bold;
     font-family: 'Farro', sans-serif;
 }
@@ -22,38 +22,91 @@
     display: block !important;
     text-align: center;
     font-size: 2rem;
-    margin-top: 10px;
+    margin-top: 5vh;
+    margin-bottom: 3vh;
     font-family: 'Farro', sans-serif;
 }
 
+.card-content {
+    padding: 1.5vw;
+}
+
 .card-title {
-    padding-top: 10px;
-    margin-bottom: 10px;
     color: #264653;
-    font-size: 2vw;
-    word-wrap: break-word;
+    font-size: 1.75em;
+    overflow-wrap: break-word;
+    line-height: 1.0em;
     font-family: 'Farro', sans-serif;
 }
 
 .card-title:hover {
-    padding-top: 10px;
-    margin-bottom: 10px;
-    color: #2A9D8F;
-    font-size: 2vw;
-    word-wrap: break-word;
+    color: #264653;
+    font-size: 1.75em;
+    overflow-wrap: break-word;
+    line-height: 1.0em;
     font-family: 'Farro', sans-serif;
+}
+
+.card-paragraph {
+    text-align: center;
+    margin-bottom: 1vh;
 }
 
 .topic {
-    font-style: italic;
-    font-weight: bold;
-    margin-bottom: 5px;
-    padding-top: 15px;
-    font-family: 'Farro', sans-serif;
+    color: #264653;
+    font-size: 1.15em;
+    padding-top: 5vh;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.topic:hover {
+    color: #264653;
+    font-size: 1.15em;
+    padding-top: 5vh;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.author {
+    display: block;
+    color: #264653;
+    font-size: 1.25em;
+    line-height: 1.0em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.author:hover {
+    display: block;
+    color: #264653;
+    font-size: 1.25em;
+    line-height: 1.0em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.description {
+    color: #264653;
+    font-size: 1.25em;
+    line-height: 1.25em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.body-text {
+    padding-top: 5vh;
+    padding-bottom: 10vh;
+    color: #264653;
+    font-size: 1.25em;
+    line-height: 1.25em;
+    font-family: 'Montserrat', sans-serif;
+    white-space: pre-line;
+}
+
+.login-form-container {
+    width: 40%;
+    margin: auto;
 }
 
 .form-container {
-    width: 500px;
+    padding-top: 5vh;
+    width: 60%;
     margin: auto;
 }
 
@@ -61,11 +114,11 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 250px;
+    height: 30vh;
     background-color: #353535;
     color: white;
     text-align: center;
-    margin-top: 50px;
+    margin-top: 15vh;
     position: relative;
 }
 
@@ -79,44 +132,42 @@
 }
 
 .footer-text {
-    font-size: 14px;
+    font-size: 1.15em;
     display: block;
-    padding-top: 10px;
+    padding-top: 1.75vh;
     color: #F4A666;
 }
 
 .footer-text:hover {
-    font-size: 14px;
+    font-size: 1.15em;
     display: block;
-    padding-top: 10px;
+    padding-top: 1.75vh;
     color: #F4A666;
 }
 
 .header {
-    padding-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 1.25vh;
     color: #2A9D8F;
 }
 
-.author {
-    display: block;
-    margin-bottom: 10px;
-}
 
 .date {
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 3.5vh;
+    font-size: 1.1em;
+    line-height: 1.0em;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .register-button {
-    height: 2em;
-    width: 5em;
+    height: 2.5em;
+    width: 7em;
     background-color: #F4A666;
     border: none;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
-    border-radius: 8px;
+    font-size: 1.15em;
+    border-radius: .5em;
     cursor:pointer;
 }
 
@@ -130,19 +181,19 @@
 
 .login {
     text-align: center;
-    padding-top: 20px;
+    padding-top: 5vh;
 }
 
 .login-button {
-    height: 2em;
-    width: 5em;
+    height: 2.5em;
+    width: 7em;
     background-color: #2A9D8F;
     border: none;
     color: white;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
-    border-radius: 8px;
+    font-size: 1.15em;
+    border-radius: .5em;
     float: right;
     cursor:pointer;
 }
@@ -156,14 +207,14 @@
 
 .article-image {
     display: block;
-    margin-top: 20px;
-    margin-bottom: 25px;
+    margin-top: 2.5vh;
+    margin-bottom: 2.75vh;
     margin-left: auto;
     margin-right: auto;
     width: 95%;
-    max-height: 500px;
+    max-height: 125vh;
     object-fit: cover;
-    border-radius: 2px;
+    border-radius: .25em;
 }
 
 .grids {
@@ -183,31 +234,30 @@
     color: white;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
-    border-radius: 8px;
+    font-size: 1.15em;
+    border-radius: .5em;
     float: right;
     cursor:pointer;
 }
 
 .about {
-    margin-top: 50px;
-    font-size: 40px;
-    text-align: center;
-    color: #DB3A34;
+    margin: 5vh 25vw 5vh;
+    font-size: 1.25em;
+    color: #353535;
 }
 
 .contact-us {
     margin-top: 50px;
     font-size: 40px;
     text-align: center;
-    color: #DB3A34;
+    color: #F8B377;
 }
 
 .privacy {
     margin-top: 50px;
     font-size: 40px;
     text-align: center;
-    color: #DB3A34;
+    color: #F8B377;
 }
 
 .comments-link {

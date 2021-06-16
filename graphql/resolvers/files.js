@@ -35,7 +35,6 @@ const processUpload = async (file) => {
     const { ext } = path.parse(filename);
     // //generate random string and add file extension
     const randomName = generateRandomString(12) + ext;
-    const pathName = path.join(__dirname, `../../public/images/${randomName}`);
     let stream = createReadStream();
     return await new Promise((resolve, reject) => {
         stream.pipe(
@@ -49,8 +48,7 @@ const processUpload = async (file) => {
                 resolve({
                     success: true,
                     message: "Successfully Uploaded",
-                    mimetype, filename, encoding, location: pathName,
-                    url: `https://storage.cloud.google.com/frame-family-bucket/${randomName}`,
+                    url: `https://storage.googleapis.com/frame-family-bucket/${randomName}`,
                 })
             })
             .on("error", (error) => {

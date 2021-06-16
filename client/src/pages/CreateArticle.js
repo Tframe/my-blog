@@ -10,10 +10,11 @@ import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag'
 
 import { useForm } from '../util/hooks';
-import { FETCH_ARTICLES_QUERY } from '../util/graphql';
 import UploadImage from '../components/UploadImage';
 
 function CreateArticle() {
+
+    const [extraPhotosAndBodies, setPhtoAndBody] = useState([{ value: { photoUrl: '', body: '' } }]);   
 
     //Potential topics
     const topics = [
@@ -22,7 +23,7 @@ function CreateArticle() {
         { key: 'p', text: 'Parent', value: 'Parent' },
         { key: 'ed', text: 'Eat and Drink', value: 'Eat and Drink' },
         { key: 'pl', text: 'Play', value: 'Play' },
-      ]
+    ]
 
     //For setting errors to display if any
     const [errors, setErrors] = useState({});
@@ -31,6 +32,12 @@ function CreateArticle() {
     //call back function to register a user.
     const { onChange, onSubmit, values } = useForm(createArticleCallback, {
         title: '',
+        extraPhotosAndBodies: [
+            {
+                photoUrl: '',
+                body: '',
+            }
+        ],
         body: '',
         description: '',
         coverImageUrl: '',
@@ -39,22 +46,32 @@ function CreateArticle() {
     //Used to update topic value.
     const selectTopic = (_, { value }) => {
         values.topic = value;
+        
     };
+
+    //Used to update topic value.
+    function setExtraBody(index, event) {
+        if(!values.extraPhotosAndBodies){
+            values.extraPhotosAndBodies.push({body: event.target.value, photoUrl: ''});
+        } else {
+            values.extraPhotosAndBodies[index].body = event.target.value;
+        } 
+    };
+
+     //Function to add new photo and body
+     function addPicture() {
+        const tempValues = [...extraPhotosAndBodies];
+        tempValues.push({ value: { photoUrl: '', body: '' } });
+        setPhtoAndBody(tempValues);
+        values.extraPhotosAndBodies.push({ photoUrl: '', body: '' });
+    }
 
     const [createArticle, { loading }] = useMutation(CREATE_ARTICLE, {
         //If mutation is successful, trigger and get result back
         //Destructure from result to get the data,
         //then get register from data and give alias userData.
-        update(proxy, result) {
-
-            //Go through cache to get articles
-            const data = proxy.readQuery({
-                query: FETCH_ARTICLES_QUERY,
-            });
-            //get proxy articles to make sure new article is included
-            data.getArticles = [result.data.createArticle, ...data.getArticles];
-            proxy.writeQuery({ query: FETCH_ARTICLES_QUERY, data });
-            window.location.replace('/');
+        update() {
+            window.location.replace('/home');
         },
         //If any errors come back from server side submit, add them to 
         //an array of errors that will then be displayed
@@ -69,15 +86,33 @@ function CreateArticle() {
         createArticle();
     }
 
-    //Callback function for upload image component
-    function imageCallback(imageUrl){
+    //Callback function for upload image component 
+    function imageCallback(imageUrl) {
         values.coverImageUrl = imageUrl;
+    }
+
+    //Function callback for extra image creation
+    function setExtraImageCallback(index, imageUrl){
+
+        if(!values.extraPhotosAndBodies){
+            values.extraPhotosAndBodies.push({body: '', photoUrl: imageUrl});
+        } else {
+            values.extraPhotosAndBodies[index].photoUrl = imageUrl;
+        }
     }
 
     return (
         <div className='form-container'>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
                 <h2>Create an article:</h2>
+                <Form.Select
+                    fluid
+                    label='Topic'
+                    options={topics}
+                    placeholder='Topic'
+                    onChange={selectTopic}
+                    error={errors.topic ? true : false}
+                />
                 <Form.Input
                     label='Title'
                     placeholder='Title'
@@ -86,6 +121,16 @@ function CreateArticle() {
                     onChange={onChange}
                     value={values.title}
                     error={errors.title ? true : false}
+                />
+                <UploadImage callBack={imageCallback} />
+                <Form.TextArea
+                    label='Description'
+                    placeholder='Description'
+                    name='description'
+                    type='text'
+                    onChange={onChange}
+                    value={values.description}
+                    error={errors.description ? true : false}
                 />
                 <Form.TextArea
                     label='Body'
@@ -96,27 +141,34 @@ function CreateArticle() {
                     value={values.body}
                     error={errors.body ? true : false}
                 />
-                <Form.TextArea
-                    label='Description'
-                    placeholder='Description'
-                    name='description'
-                    type='text'
-                    onChange={onChange}
-                    value={values.description}
-                    error={errors.description ? true : false}
-                />
-                <Form.Select
-                    fluid
-                    label='Topic'
-                    options={topics}
-                    placeholder='Topic'
-                    onChange={selectTopic}
-                    error={errors.topic ? true : false}
-                />
-                <UploadImage callBack = {imageCallback}/>
-                <br/>
+                {extraPhotosAndBodies && extraPhotosAndBodies.map((field, index) => {
+                    return (
+                        <div key={`${field}-${index}`}>
+                            <UploadImage callBack={(imageUrl) => setExtraImageCallback(index, imageUrl)} />
+                            <Form.TextArea
+                                label='Body'
+                                placeholder='Body'
+                                name={extraPhotosAndBodies[index].body}
+                                type='text'
+                                onChange={(event) => setExtraBody(index, event)}
+                                value={extraPhotosAndBodies[index].body}
+                                error={errors.extraPhotosAndBodies ? true : false}
+                            />
+                        </div>
+                    )
+                })}
+                <br />
                 <Button type='submit' color='blue'>
                     Submit
+                </Button>
+                <Button
+                    as='div'
+                    color='green'
+                    floated='right'
+                    style={{ 'borderRadius': '6px' }}
+                    onClick={() => addPicture()}
+                >
+                    Add Picture
                 </Button>
             </Form>
             {Object.keys(errors).length > 0 && (
@@ -141,6 +193,7 @@ const CREATE_ARTICLE = gql`
     mutation createArticle(
         $title: String!,
         $body: String!,
+        $extraPhotosAndBodies: [ExtraPhotoAndBodyInput!]!,
         $description: String!,
         $coverImageUrl: String!,
         $topic: String!,
@@ -148,6 +201,7 @@ const CREATE_ARTICLE = gql`
         createArticle(
             title: $title,
             body: $body,
+            extraPhotosAndBodies: $extraPhotosAndBodies,
             description: $description,
             coverImageUrl: $coverImageUrl,
             topic: $topic,
@@ -157,6 +211,10 @@ const CREATE_ARTICLE = gql`
             title
             coverImageUrl
             body
+            extraPhotosAndBodies{
+                body
+                photoUrl
+            }
             description
             createdAt
             username

@@ -13,6 +13,12 @@ const articleSchema = new Schema({
     title: String,
     coverImageUrl: String,
     body: String,
+    extraPhotosAndBodies: [
+        {
+            photoUrl: String,
+            body: String,
+        }
+    ],
     createdAt: String,
     topic: String,
     comments: [

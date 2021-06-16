@@ -52,7 +52,7 @@ module.exports = {
 
     Mutation: {
         //Create an article
-        async createArticle(_, { body, title, description, coverImageUrl, topic }, context) {
+        async createArticle(_, { body, title, description, coverImageUrl, topic, extraPhotosAndBodies }, context) {
 
             //check authorized
             const user = checkAuth(context);
@@ -66,6 +66,7 @@ module.exports = {
                 body,
                 coverImageUrl,
                 topic,
+                extraPhotosAndBodies,
             );
             //If not valid, show errors
             if (!valid) {
@@ -79,6 +80,7 @@ module.exports = {
                 body,
                 coverImageUrl,
                 topic,
+                extraPhotosAndBodies,
                 author: userInfo.firstName + ' ' + userInfo.lastName,
                 createdAt: new Date().toISOString(),
             });

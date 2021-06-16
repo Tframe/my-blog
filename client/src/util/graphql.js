@@ -12,6 +12,10 @@ export const FETCH_ARTICLES_QUERY = gql`
          title
          body
          likeCount
+         extraPhotosAndBodies {
+             body
+             photoUrl
+         }
          likes {
              username
          }
@@ -39,6 +43,10 @@ export const FETCH_ARTICLES_TOPIC_QUERY = gql`
             description
             title
             body
+            extraPhotosAndBodies {
+                body
+                photoUrl
+            }
             likeCount
             likes {
                 username
@@ -55,3 +63,22 @@ export const FETCH_ARTICLES_TOPIC_QUERY = gql`
         }
     }  
 `;
+
+export const FETCH_BROWSER_FINGERPRINTS_QUERY = gql`
+    {    
+        getBrowserFingerprints{
+            browserFingerprintId,
+            createdAt,
+        }
+    }
+`;
+
+export const FETCH_BROWSER_FINGERPRINT_BY_ID_QUERY = gql`
+    query($browserFingerprintId: String!)  {
+        getFingerprint(browserFingerprintId: $browserFingerprintId){
+            browserFingerprintId,
+            createdAt
+        }
+    }
+`;
+

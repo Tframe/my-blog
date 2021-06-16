@@ -4,12 +4,11 @@
 *   Description: Component for article card to display information
 */
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { Button, Card, Icon, Popup } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-import { AuthContext } from '../context/auth';
 import LikeButton from './LikeButton';
 
 function ArticleCard({
@@ -17,29 +16,39 @@ function ArticleCard({
     color
 }) {
 
-    const { user } = useContext(AuthContext);
-
     return (
         <Card style={{ 'height': 'auto', 'marginBottom': '20px', 'backgroundColor': color }} fluid>
-            <Card.Content>
-                <Card.Description className='topic'>{topic}</Card.Description>
-                <a className='card-title' href={`/articles/${id}`}>
-                    {title}
-                </a>
-                <Card.Description>By: {author}</Card.Description>
-                <Card.Meta>
-                    {moment(createdAt).format('MMMM Do YYYY')}
-                </Card.Meta>
+            <div className='card-content'>
+                <p>
+                    <a className='topic' href={`/articles/${id}`}>
+                        {topic}
+                    </a>
+                </p>
+                <p className='card-paragraph'>
+                    <a className='card-title' href={`/articles/${id}`}>
+                        {title.toUpperCase()}
+                    </a>
+                </p>
+                <p className='card-paragraph'>
+                    <a className='author' href={`/articles/${id}`}>
+                        {author}
+                    </a>
+                </p>
+                <p className='card-paragraph'>
+                    <div className='date'>
+                        {moment(createdAt).format('MM')}.{moment(createdAt).format('DD')}.{moment(createdAt).format('YY')}
+                    </div>
+                </p>
                 <a href={`/articles/${id}`}>
-                    <img className='article-image' style={{ display: 'block' }} src={coverImageUrl} alt='Bad' />
+                    <img className='article-image' style={{ display: 'block' }} src={coverImageUrl} alt='Not found' />
                 </a>
-                <Card.Description>
+                <div className='description'>
                     {description.length > 200 ? description.substring(0, 200) + ' . . . ' : description}
-                </Card.Description>
-            </Card.Content>
+                </div>
+            </div>
             <Card.Content extra>
                 <Button.Group fluid>
-                    <LikeButton user={user} article={{ id, likes, likeCount }} />
+                    <LikeButton article={{ id, likes, likeCount }} />
                     <Popup
                         content='Comment on article...'
                         trigger={

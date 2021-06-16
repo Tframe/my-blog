@@ -12,6 +12,7 @@ const { UserInputError } = require('apollo-server');
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators');
 const { SECRET_KEY } = require('../../config/config');
 const User = require('../../models/User');
+const BrowserFingerprint = require('../../models/BrowserFingerprint');
 
 //Takes user information and returns a token
 function generateToken(user) {
@@ -26,7 +27,49 @@ function generateToken(user) {
 
 
 module.exports = {
+
+    Query: {
+        //get all unique browser fingerprintids
+        async getBrowserFingerprints() {
+            try {
+                const fingerprints = await BrowserFingerprint.find().sort({ createdAt: -1 });
+                return fingerprints;
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
+        //get a single unique browser fingerprint by id
+        async getBrowserFingerprint(_, { browserFingerprintId }) {
+
+            try {
+                var query = { browserFingerprintId: browserFingerprintId };
+                const fingerprintId = await BrowserFingerprint.find(query)
+                if (fingerprintId) {
+                    return fingerprintId[0];
+                } else {
+                    return '0';
+                }
+            } catch (error) {
+                throw new Error(error);
+            }
+        },
+    },
+
     Mutation: {
+        //Add the unique browser fingerprint id to mongoDB
+        async addBrowserFingerprint(_, { browserFingerprintId }) {
+
+            //new article object
+            const newBrowserFingerprintId = new BrowserFingerprint({
+                browserFingerprintId,
+                createdAt: new Date().toISOString(),
+            });
+            //Save article to mongodb
+            const fingerPrintId = await newBrowserFingerprintId.save();
+
+            return fingerPrintId;
+        },
+
         async register(_,
             {
                 registerInput: { username, firstName, lastName, email, password, confirmPassword }
@@ -93,22 +136,22 @@ module.exports = {
         },
 
         async login(_, { username, password }) {
-            
+
             //verify login info are entered
             const { errors, valid } = validateLoginInput(username, password);
             //if validation is bad, throw error
-            if(!valid){
+            if (!valid) {
                 throw new UserInputError('Errors', { errors });
             }
             //check if username correct
             const user = await User.findOne({ username });
-            if(!user){
+            if (!user) {
                 errors.general = 'Incorrect username or password';
                 throw new UserInputError('Incorrect username or password', { errors });
             }
             //Check if password is correct
             const match = await bcrypt.compare(password, user.password);
-            if(!match){
+            if (!match) {
                 errors.general = 'Incorrect username or password';
                 throw new UserInputError('Incorrect username or password', { errors });
             }

@@ -12,7 +12,6 @@ export default function UploadImage({ callBack }) {
 
     const [uploadImage] = useMutation(UPLOAD_FILE, {
         onCompleted: (data) => {
-            console.log(data.uploadImage.url);
             callBack(data.uploadImage.url);
         }
     });
@@ -30,7 +29,6 @@ export default function UploadImage({ callBack }) {
 
     return (
         <div>
-            <h3>Upload Image</h3>
             <Form.Input
                 label='Image'
                 placeholder='Image'
