@@ -31,7 +31,7 @@ const articleSchema = new Schema({
     ],
     likes: [
         {
-            username: String,
+            browserFingerprintId: String,
             createdAt: String,
         }
     ],

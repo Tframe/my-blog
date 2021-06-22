@@ -9,12 +9,12 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 
 const BrowserFPIdContext = createContext({
-    browserFPId: null,
+    browserFingerprintId: null,
 });
 
 function BrowserFPProvider(props) {
 
-    const [browserFPId, setBrowserFPId] = useState('');
+    const [browserFingerprintId, setBrowserFPId] = useState('');
 
     // Initialize an agent at application startup.
     const fpPromise = FingerprintJS.load();
@@ -26,7 +26,6 @@ function BrowserFPProvider(props) {
 
         // This is the visitor identifier:
         const visitorId = result.visitorId;
-        console.log('like visId ' + visitorId);
         setBrowserFPId(visitorId);
     }
 
@@ -34,7 +33,7 @@ function BrowserFPProvider(props) {
 
     return (
         <BrowserFPIdContext.Provider
-            value={{ browserFPId: browserFPId }}
+            value={{ browserFingerprintId: browserFingerprintId }}
             {...props}
         />
     )

@@ -17,7 +17,7 @@ export const FETCH_ARTICLES_QUERY = gql`
              photoUrl
          }
          likes {
-             username
+            browserFingerprintId
          }
          commentCount
          comments {
@@ -49,7 +49,7 @@ export const FETCH_ARTICLES_TOPIC_QUERY = gql`
             }
             likeCount
             likes {
-                username
+                browserFingerprintId
             }
             commentCount
             comments {

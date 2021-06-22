@@ -221,7 +221,7 @@ const CREATE_ARTICLE = gql`
             topic
             likes {
                 id
-                username
+                browserFingerprintId
                 createdAt
             }
             likeCount

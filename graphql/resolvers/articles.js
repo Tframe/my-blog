@@ -106,22 +106,20 @@ module.exports = {
             }
         },
         //Like an article
-        async likeArticle(_, { articleId }, context) {
-            //Check authorization before creating the comment
-            const { username } = checkAuth(context);
+        async likeArticle(_, { articleId, browserFingerprintId }, context) {
 
             //find article by id
             const article = await Article.findById(articleId);
 
             if (article) {
                 //If article liked already, unlike it, otherwise like it
-                if (article.likes.find((like) => like.username === username)) {
+                if (article.likes.find((like) => like.browserFingerprintId === browserFingerprintId)) {
                     //Grab each like by all other users. 
-                    article.likes = article.likes.filter((like) => like.username !== username);
+                    article.likes = article.likes.filter((like) => like.browserFingerprintId !== browserFingerprintId);
                 } else {
                     //add like info to array
                     article.likes.push({
-                        username,
+                        browserFingerprintId,
                         createdAt: new Date().toISOString(),
                     });
                 }

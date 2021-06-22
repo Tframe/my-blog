@@ -26,7 +26,6 @@ function Welcome() {
 
         // This is the visitor identifier:
         const visitorId = result.visitorId;
-        console.log('vis ' + visitorId);
         return visitorId;
     }
 

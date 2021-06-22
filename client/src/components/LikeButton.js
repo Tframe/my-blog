@@ -14,9 +14,7 @@ import { BrowserFPIdContext } from '../context/browserFPId';
 
 function LikeButton({ article: { id, likeCount, likes } }) {
 
-    const { browserFPId } = useContext(BrowserFPIdContext);
-
-    console.log('like ' + browserFPId);
+    const { browserFingerprintId } = useContext(BrowserFPIdContext);
 
     //Sets array of liked articles to false already
     const [liked, setLiked] = useState(false);
@@ -24,18 +22,18 @@ function LikeButton({ article: { id, likeCount, likes } }) {
     //Determine if liked or not
     useEffect(() => {
         //Check if user has liked already
-        if (likes.find((like) => like.browserFPId === browserFPId)) {
+        if (likes.find((like) => like.browserFingerprintId === browserFingerprintId)) {
             setLiked(true);
         } else {
             setLiked(false);
         }
         //If either user or likes change, recalculate value
-    }, [browserFPId, likes]);
+    }, [browserFingerprintId, likes]);
 
     //This is the call like_article mutation and gets back the 
     //liked articles
     const [likeArticle] = useMutation(LIKE_ARTICLE, {
-        variables: { articleId: id }
+        variables: { articleId: id, browserFingerprintId: browserFingerprintId }
     });
 
     //Creates a like button based on whether liked already or not
@@ -56,7 +54,7 @@ function LikeButton({ article: { id, likeCount, likes } }) {
         <Popup
             content='Like article...'
             trigger={
-                <Button as='div' labelPosition='right' onClick={liked ? likeArticle : undefined}>
+                <Button as='div' labelPosition='right' onClick={likeArticle}>
                     {likeButton}
                 </Button>
             }
@@ -65,12 +63,18 @@ function LikeButton({ article: { id, likeCount, likes } }) {
 }
 
 const LIKE_ARTICLE = gql`
-    mutation likeArticle($articleId: ID!) {
-        likeArticle(articleId: $articleId) {
+    mutation likeArticle(
+        $articleId: ID!, 
+        $browserFingerprintId: String!,) 
+    {
+        likeArticle(
+            articleId: $articleId, 
+            browserFingerprintId: $browserFingerprintId,
+        ) {
             id
             likes {
                 id
-                browserFPId
+                browserFingerprintId
             }
             likeCount
         }

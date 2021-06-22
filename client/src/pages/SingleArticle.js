@@ -136,7 +136,7 @@ const FETCH_ARTICLE = gql`
             username
             likeCount
             likes {
-                username
+                browserFingerprintId
             }
             commentCount
             comments {

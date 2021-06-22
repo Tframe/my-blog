@@ -29,7 +29,7 @@ module.exports = gql`
     type Likes {
         id: ID!,
         createdAt: String!,
-        username: String!,
+        browserFingerprintId: String!,
     },
 
     type ExtraPhotoAndBody {
@@ -121,7 +121,7 @@ module.exports = gql`
         createComment(articleId: ID!, name: String!, email: String!, body: String!): Article!,
         deleteComment(articleId: ID!, commentId: ID!): Article!,
 
-        likeArticle(articleId: ID!): Article!,
+        likeArticle(articleId: ID!, browserFingerprintId: String!): Article!,
 
         createArticle(title: String!, body: String!, description: String!, coverImageUrl: String!, topic: String!, extraPhotosAndBodies: [ExtraPhotoAndBodyInput] ): Article!,
         deleteArticle(articleId: ID!): String!,
